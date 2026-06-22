@@ -4,11 +4,6 @@ import multer from "multer";
 import { createClient } from "@supabase/supabase-js";
 import { createClerkClient } from "@clerk/backend";
 import "dotenv/config";
-import cors from "cors";
-import multer from "multer";
-import { createClient } from "@supabase/supabase-js";
-import { createClerkClient } from "@clerk/backend";
-import "dotenv/config";
 
 const requiredEnvVars = [
   "ANTHROPIC_API_KEY",
