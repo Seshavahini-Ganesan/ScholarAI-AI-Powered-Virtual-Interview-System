@@ -23,7 +23,6 @@ import {
 } from "recharts";
 import CameraMonitor from "./CameraMonitor";
 import * as api from "../lib/api";
-
 const C = {
   bg: "#0d1117",
   surface: "#161b22",
@@ -84,18 +83,9 @@ function UploadStep({ onParsed }: any) {
     setStatus("parsing");
     setError("");
     try {
-      const formData = new FormData();
-      formData.append("resume", file);
-     const res = await fetch(`${API_BASE}/resume/parse`, {
-  method: "POST",
-  body: formData,
-});
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err?.error || "Failed to parse resume");
-      }
-      const result = await res.json();
-      const resumeText = result.resumeText;
+     const result = await api.parseResume(file);
+
+const resumeText = result.resumeText;
       if (!resumeText || resumeText.length < 50)
         throw new Error("Could not extract text — try another format.");
       onParsed({ resumeText, jobRole, fileName: file.name });
