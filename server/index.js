@@ -1,4 +1,9 @@
-;
+import express from "express";
+import cors from "cors";
+import multer from "multer";
+import { createClient } from "@supabase/supabase-js";
+import { createClerkClient } from "@clerk/backend";
+import "dotenv/config";
 import cors from "cors";
 import multer from "multer";
 import { createClient } from "@supabase/supabase-js";
@@ -61,8 +66,7 @@ const clerkClient = createClerkClient({
 const GROQ_API_KEY = process.env.ANTHROPIC_API_KEY;
 const PISTON_API_URL = process.env.PISTON_API_URL;
 const PISTON_API_KEY = process.env.PISTON_API_KEY;
-
-// ── Autimport express from "express"h middleware ──────────────────────────────────────────────────────────
+// ── Auth middleware ──────────────────────────────────────────────────────────
 async function verifyClerkToken(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
