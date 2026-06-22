@@ -86,10 +86,10 @@ function UploadStep({ onParsed }: any) {
     try {
       const formData = new FormData();
       formData.append("resume", file);
-      const res = await fetch("/api/resume/parse", {
-        method: "POST",
-        body: formData,
-      });
+     const res = await fetch(`${API_BASE}/resume/parse`, {
+  method: "POST",
+  body: formData,
+});
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err?.error || "Failed to parse resume");

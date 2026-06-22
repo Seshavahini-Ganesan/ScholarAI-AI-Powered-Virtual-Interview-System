@@ -1,4 +1,4 @@
-import express from "express";
+;
 import cors from "cors";
 import multer from "multer";
 import { createClient } from "@supabase/supabase-js";
@@ -28,14 +28,27 @@ const upload = multer({
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "http://localhost:4173",
-      process.env.FRONTEND_URL,
-    ].filter(Boolean),
+    origin: (origin, callback) => {
+      const allowed = [
+        "http://localhost:5173",
+        "http://localhost:4173",
+        process.env.FRONTEND_URL,
+      ].filter(Boolean);
+
+      if (
+        !origin ||
+        allowed.includes(origin) ||
+        origin.endsWith(".vercel.app")
+      ) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
-  }),
+  })
 );
+
 app.use(express.json());
 
 const supabase = createClient(
@@ -49,7 +62,7 @@ const GROQ_API_KEY = process.env.ANTHROPIC_API_KEY;
 const PISTON_API_URL = process.env.PISTON_API_URL;
 const PISTON_API_KEY = process.env.PISTON_API_KEY;
 
-// ── Auth middleware ──────────────────────────────────────────────────────────
+// ── Autimport express from "express"h middleware ──────────────────────────────────────────────────────────
 async function verifyClerkToken(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
