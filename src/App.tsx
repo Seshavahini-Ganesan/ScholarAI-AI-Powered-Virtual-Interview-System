@@ -25,7 +25,7 @@ function UserSync() {
     (async () => {
       try {
         const token = await getToken();
-        await fetch('/api/user/create', {
+        await fetch(`${import.meta.env.VITE_API_URL}/api/user/create`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
